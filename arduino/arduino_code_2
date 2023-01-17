@@ -1,0 +1,10 @@
+int i = 0;
+char *t;
+void setup() {
+t = (char *) (&i);
+Serial.begin(20000) ;
+}
+void loop() {
+ i = analogRead(5);
+ Serial.write(t, sizeof(int));
+}
