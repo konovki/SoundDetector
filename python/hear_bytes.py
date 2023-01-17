@@ -8,10 +8,11 @@ arduino = serial.Serial(port='/dev/cu.usbmodem1301', baudrate=9600)  # , timeout
 plt.ion()
 Mode = 'drow'#'Detection'
 fig, ax_l = plt.subplots(2, 1)
+def read_b(plata):
+    data = plata.read(2)
+    # print(int.from_bytes(data[::-1], 'big'))
+    return int.from_bytes(data[::-1], 'big')
 
-def read(plata):
-    data = plata.readline()
-    return int(data.split()[0])
 
 while True:
     start = True
@@ -19,12 +20,11 @@ while True:
     delta = dt.timedelta(seconds=1)
     t1 = dt.datetime.now()
     s1, s2 = [], []
-    read(arduino)
+    read_b(arduino)
     while Flag == True:
-        s1.append(read(arduino))
+        s1.append(read_b(arduino))
         if dt.datetime.now() - t1 > delta:
             Flag = False
-
     s1 = np.array(s1)
     print(len(s1))
     if len(s1)>1:
